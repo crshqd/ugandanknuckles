@@ -1,6 +1,6 @@
 (async () => {
   const swUrl = new URL("./sw.js", location.href);
-  await navigator.serviceWorker.register(swUrl, { scope: "/" });
+  await navigator.serviceWorker.register(swUrl);
   await navigator.serviceWorker.ready;
 
   // Ensure this page is controlled
@@ -110,7 +110,7 @@ async function zipon() {
       for (const name in zip.files) {
         if (!zip.files[name].dir) {
           const blob = await zip.files[name].async("blob");
-          files["/dfw/" + name] = blob;
+          files["dfw/" + name] = blob;
         }
       }
 
@@ -118,7 +118,7 @@ async function zipon() {
       await sendZipToSW(files);
 
       // Now safe to open
-      window.open("/dfw/" + f, "_blank");
+      window.open("dfw/" + f, "_blank");
     };
 
     picker.appendChild(btn);
