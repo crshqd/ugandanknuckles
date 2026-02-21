@@ -1,6 +1,6 @@
 (async () => {
   const swUrl = new URL("./sw.js", location.href);
-  await navigator.serviceWorker.register(swUrl,{"scope":"/"});
+  await navigator.serviceWorker.register(swUrl,{"scope":"./"});
   await navigator.serviceWorker.ready;
 
   // Ensure this page is controlled
