@@ -1,13 +1,10 @@
 (async () => {
   const swUrl = new URL("./sw.js", location.href);
   await navigator.serviceWorker.register(swUrl, { scope: "/" });
-  console.log("[JS] SW registered");
+  await navigator.serviceWorker.ready;
 
-  const registration = await navigator.serviceWorker.ready;
-
-  // If page not controlled yet, reload so controller hooks up
+  // Ensure this page is controlled
   if (!navigator.serviceWorker.controller) {
-    console.log("[JS] Page not controlled yet, reloading...");
     location.reload();
     return;
   }
@@ -15,8 +12,9 @@
   console.log("[JS] SW ready and controlling page");
 })();
 
-// UI helpers
 const p = [];
+
+// UI helpers
 function main() {
   document.getElementById("sf").style.display = "none";
   document.getElementById("zip").style.display = "none";
@@ -33,13 +31,13 @@ function zip() {
 
 // Open single HTML file
 function sfon() {
-  const file = document.getElementById("htmlInput")?.files[0];
+  const file = document.getElementById("html").files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {
     const blob = new Blob([reader.result], { type: "text/html" });
     const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
+    window.open(url);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
   reader.readAsText(file);
@@ -49,7 +47,7 @@ function sfon() {
 function sfr(content) {
   const blob = new Blob([content], { type: "text/html" });
   const url = URL.createObjectURL(blob);
-  window.open(url, "_blank");
+  window.open(url);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
@@ -65,9 +63,13 @@ function sendZipToSW(files) {
     }
 
     const channel = new MessageChannel();
+
     channel.port1.onmessage = (event) => {
-      if (event.data?.type === "ZIP_LOADED") resolve();
-      else reject("SW failed");
+      if (event.data?.type === "ZIP_LOADED") {
+        resolve();
+      } else {
+        reject("SW failed");
+      }
     };
 
     sw.postMessage({ type: "LOAD_ZIP", files }, [channel.port2]);
@@ -77,7 +79,7 @@ function sendZipToSW(files) {
 // ZIP picker
 async function zipon() {
   const fileInput = document.getElementById("zipInput");
-  const zipFile = fileInput?.files[0];
+  const zipFile = fileInput.files[0];
   if (!zipFile) return alert("Please choose a ZIP file!");
 
   const zip = await JSZip.loadAsync(zipFile);
@@ -85,6 +87,7 @@ async function zipon() {
   const htmlFiles = Object.keys(zip.files).filter(
     (f) => f.endsWith(".html") || f.endsWith(".htm")
   );
+
   if (!htmlFiles.length) return alert("No HTML files in ZIP!");
 
   const picker = document.createElement("div");
@@ -105,18 +108,19 @@ async function zipon() {
 
     btn.onclick = async () => {
       const files = {};
+
       for (const name in zip.files) {
         if (!zip.files[name].dir) {
           const blob = await zip.files[name].async("blob");
-          files["dfw/" + name] = blob;
+          files["/dfw/" + name] = blob;
         }
       }
 
-      // Wait until SW has loaded files
+      // Wait until IndexedDB storage finishes
       await sendZipToSW(files);
 
       // Now safe to open
-      window.open("dfw/" + f, "_blank");
+      window.open("/dfw/" + f, "_blank");
     };
 
     picker.appendChild(btn);
