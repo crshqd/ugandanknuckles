@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>FileClient</title>
+    <style>
+      @import url(https://fonts.upset.dev/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap);
+      * {
+        font-family: "Ubuntu", sans-serif;
+      }
+      #zip-picker button {
+        display: block;
+        margin: 5px 0;
+      }
+    </style>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      eruda.init();
+    </script>
+  </head>
+  <body>
+    <h1 style="font-style: italic">FileClient</h1>
+    <hr />
+    <div id="main">
+      <p>
+        bring back files!<br />no data is sent to the servers!<br />choose what
+        type of file you would like to run!<br />
+      </p>
+      <button onclick="sf()">single file [.html]</button><br />
+      <button onclick="zip()">zip file [.zip]</button><br />
+      <p>presets:<br /></p>
+      <button onclick="sfr(p[0])">dlpack</button>
+      <button onclick="zipr(p[1])">reese's puffs</button>
+      <button onclick="zipr(p[2])">biggie cheese</button>
+      <button onclick="zipr(p[3])">bgb</button>
+      <br /><br />
+      a <a href="https://shorturl.at/LzrUu">gams</a> exclusive<br />
+      big brother is watching you
+    </div>
+
+    <!-- Single HTML UI -->
+    <div id="sf" style="display: none">
+      <button onclick="main()">&lt; back</button>
+      <p>upload your .html below</p>
+      <input
+        type="file"
+        style="font-family: 'Ubuntu', sans-serif"
+        id="htmlInput"
+        accept=".html,.htm"
+      /><br /><br />
+      <button onclick="sfon()">open file</button>
+    </div>
+
+    <!-- ZIP UI -->
+    <div id="zip" style="display: none">
+      <button onclick="main()">&lt; back</button>
+      <p>
+        upload your .zip below<br />warning: may take a bit for large zip files!
+      </p>
+      <input
+        type="file"
+        style="font-family: 'Ubuntu', sans-serif"
+        id="zipInput"
+        accept=".zip"
+      /><br /><br />
+      <button onclick="zipon()">open zip</button><br />
+      <div id="zip-picker"></div>
+    </div>
+
+    <!-- JSZip + main JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1"></script>
+    <script src="js.js"></script>
+  </body>
+</html>
