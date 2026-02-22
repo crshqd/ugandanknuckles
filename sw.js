@@ -1,7 +1,7 @@
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", () => self.clients.claim());
 
-const DB_NAME = "virtual-files-db";
+const DB_NAME = "files-db";
 const STORE_NAME = "files";
 
 const mimeMap = {
@@ -69,7 +69,7 @@ self.addEventListener("message", async (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  if (url.pathname.startsWith("/dfw/")) {
+  if (url.pathname.includes("/dfw/")) {
     event.respondWith(
       (async () => {
         const path = decodeURIComponent(url.pathname);

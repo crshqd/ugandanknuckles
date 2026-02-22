@@ -1,3 +1,4 @@
+<!-- file.garden version of this app because file.garden has csp and it craps out stuff-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>FileClient</title>
     <style>
-      @import url(https://fonts.upset.dev/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap);
+      @font-face {
+        font-family: "Ubuntu";
+        src: url("Ubuntu-R.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Ubuntu";
+        src: url("Ubuntu-BI.ttf") format("truetype");
+        font-weight: 700;
+        font-style: italic;
+        font-display: swap;
+      }
       * {
         font-family: "Ubuntu", sans-serif;
       }
@@ -22,15 +36,17 @@
     <div id="main">
       <p>
         bring back files!<br />choose what type of file you would like to
-        run!<br />
+        run!<br />warning: this app is slow af<br />
       </p>
       <button onclick="sf()">single file [.html]</button><br />
       <button onclick="zip()">zip file [.zip]</button><br />
       <p>presets:<br /></p>
       <button onclick="sfr(p[0])">dlpack</button>
-      <button onclick="zipr(p[1])">reese's puffs</button>
-      <button onclick="zipr(p[2])">biggie cheese</button>
-      <button onclick="zipr(p[3])">bgb</button>
+      <button onclick="zipr(p[1],'reese\'s puffsv1/index.html')">
+        reese's puffs
+      </button>
+      <button onclick="zipr(p[2],'BGC.html')">biggie cheese</button>
+      <button onclick="zipr(p[3],'Main Hub.html')">bgb</button>
       <br /><br />
       a <a href="https://shorturl.at/LzrUu">gams</a> exclusive<br />
       big brother is watching you
@@ -64,7 +80,7 @@
     </div>
 
     <!-- JSZip + main JS -->
-    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1"></script>
+    <script src="jszip.js"></script>
     <script src="js.js"></script>
   </body>
 </html>
